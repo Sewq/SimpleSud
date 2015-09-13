@@ -1,37 +1,42 @@
 package Area;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.google.common.collect.Maps;
 
+@XmlRootElement
 public class RoomImpl implements Room {
 
-	public static final String ANSI_RED = "\u001B[31m";
 	private String roomName;
 	private int roomIndex;
 	private String terrain;
+	private final HashMap<String, Integer> exit = Maps.newHashMap();
 
-	private final Map<String, Integer> exit = Maps.newHashMap();
+	public RoomImpl() {
 
-	public RoomImpl(final String name, final String terrain,
-			final int roomIndex, final String way, final int roomIndexx) {
+	}
+
+	public RoomImpl(final String name, final String terrain, final int roomIndex) {
 		this.roomName = name;
 		this.terrain = terrain;
-		this.roomIndex = roomIndex;
-		this.setExits(way, roomIndexx);
 	}
 
 	@Override
-	public void setExits(final String way, final int roomIndex) {
+	public void setExit(final String way, final int roomIndex) {
 		this.exit.put(way, roomIndex);
 	}
 
 	@Override
-	public int getExit(final String exit) {
+	public int getRoomIndexComparingToExit(final String exit) {
 		return this.exit.get(exit);
 	}
 
+	@XmlElement
 	@Override
 	public Map<String, Integer> getAvailableWaysToGo() {
 		return this.exit;
@@ -60,6 +65,7 @@ public class RoomImpl implements Room {
 		return this.terrain;
 	}
 
+	@XmlElement
 	public void setTerrain(final String terrain) {
 		this.terrain = terrain;
 	}
@@ -70,7 +76,7 @@ public class RoomImpl implements Room {
 	}
 
 	@Override
-	public void show() {
+	public void showRoomDescription() {
 		System.out.println("Nice room nr " + this.roomIndex
 				+ " with a beautyful name " + this.roomName + "\n\n\n");
 	}

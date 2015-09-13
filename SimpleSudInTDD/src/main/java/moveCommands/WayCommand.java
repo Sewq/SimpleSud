@@ -10,24 +10,26 @@ import commandHandler.Command;
 
 public class WayCommand implements Command {
 
+	private static final int COMMAND = 0;
+
 	@Override
 	public void execute(final String[] commandArguments) {
 
 		final PlayerHandler player = PlayerProvider.getPlayerInstance();
-		final Area area = AreaProvider.areas.get(player.getAreaIndex());
+		final Area area = AreaProvider.getAreas().get(player.getAreaIndex());
 		final Room room = area.getRoom(player.getRoomIndex());
+		final String argument = commandArguments[COMMAND];
 
-		if (isNorthWayAvailable(commandArguments, room)) {
-			player.setRoomIndex(room.getExit(commandArguments[0]));
+		if (isDirectionAvailable(argument, room)) {
+			player.setRoomIndex(room.getRoomIndexComparingToExit(argument));
 		} else {
 			System.out.println("You can't go this way!");
 		}
 
 	}
 
-	private boolean isNorthWayAvailable(final String[] commandArguments,
-			final Room room) {
-		return room.getAvailableWaysToGo().containsKey(commandArguments[0]);
+	private boolean isDirectionAvailable(final String argument, final Room room) {
+		return room.getAvailableWaysToGo().containsKey(argument);
 	}
 
 }

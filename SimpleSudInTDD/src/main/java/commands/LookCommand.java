@@ -15,8 +15,9 @@ public class LookCommand implements Command {
 			System.out.println("huh?");
 		} else {
 			final PlayerHandler player = PlayerProvider.getPlayerInstance();
-			final Area area = AreaProvider.areas.get(player.getAreaIndex());
-			area.getRoom(player.getRoomIndex()).show();
+			final Area area = AreaProvider.getAreas()
+					.get(player.getAreaIndex());
+			area.getRoom(player.getRoomIndex()).showRoomDescription();
 		}
 	}
 
